@@ -16,6 +16,10 @@ A Streamlit-based application that implements Retrieval Augmented Generation usi
 - Python 3.8+
 - Google API key (Gemini)
 - Pinecone API key (optional)
+- Pinecone index must be created with:
+  - Dimension: 384 (for SentenceTransformer all-MiniLM-L6-v2)
+  - Metric: cosine
+  - Pod type: p1.x1 (or your preferred pod type)
 
 ## Installation
 
@@ -25,32 +29,39 @@ pip install -r requirements.txt
 
 ## Configuration
 
-You can configure the application using either environment variables or the Streamlit UI:
+### API Keys
+You can configure the application using either:
+1. Streamlit secrets.toml:
+```toml
+gemini_api_key = "your-gemini-api-key"
+pinecone_api_key = "your-pinecone-api-key"
+pinecone_env = "your-pinecone-environment"
+pinecone_index = "your-pinecone-index-name"
+```
 
-Required for basic functionality:
-- Google API key for Gemini
-
-Required for Pinecone integration:
-- Pinecone API key
-- Pinecone environment
-- Pinecone index name
+2. Or through the Streamlit UI sidebar
 
 ## Usage
 
-1. Run the application:
+1. Start the application:
 ```bash
 streamlit run app.py
 ```
 
-2. In the sidebar, enter your API keys if not configured through environment variables
+2. Configure:
+   - Enter API keys in sidebar if not using secrets.toml
+   - Toggle 'Use Pinecone Vector DB' if you want to use Pinecone
+   - Upload PDF documents
 
-3. Toggle 'Use Pinecone Vector DB' if you want to use Pinecone instead of local storage
+3. Process Documents:
+   - Click "Submit Documents"
+   - Wait for processing completion
+   - Status messages will show progress
 
-4. Upload your PDF documents
-
-5. Click "Submit Documents" to process and embed the documents
-
-6. Start chatting with your documents through the interactive interface
+4. Query Documents:
+   - Use the chat interface at the bottom
+   - Type your questions about the documents
+   - View conversation history above
 
 ## Project Structure
 
@@ -65,13 +76,10 @@ RAG/
 
 ## Technologies Used
 
-- LangChain
-- Google Gemini
-- Streamlit
-- Sentence Transformers
-- PyPDF2
-- Pinecone/Chroma DB
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+- LangChain: Framework for LLM applications
+- Google Gemini 1.5 Flash: Large Language Model
+- Streamlit: Web interface
+- SentenceTransformers: Document embeddings
+- Chroma DB: Local vector storage
+- Pinecone: Cloud vector database (optional)
+- PyPDF2: PDF processing
