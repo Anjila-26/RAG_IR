@@ -27,7 +27,7 @@ TMP_DIR.mkdir(parents=True, exist_ok=True)
 LOCAL_VECTOR_STORE_DIR.mkdir(parents=True, exist_ok=True)
 
 st.set_page_config(page_title="RAG")
-st.title("Retrieval Augmented Generation Engine")
+st.title("Retrieval Augmented Generation (RAG) with Langchain")
 
 
 def load_documents():
@@ -61,26 +61,28 @@ def split_documents(documents):
 
 def clear_vector_store():
     try:
-        if os.path.exists(LOCAL_VECTOR_STORE_DIR):
-            # Create a temporary Chroma instance
-            embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-            temp_db = Chroma(persist_directory=LOCAL_VECTOR_STORE_DIR.as_posix(), embedding_function=embeddings)
-            
-            # Delete collection if it exists
-            temp_db.delete_collection()
-            
-            # Remove directory contents but keep the directory
-            for item in os.listdir(LOCAL_VECTOR_STORE_DIR):
-                item_path = os.path.join(LOCAL_VECTOR_STORE_DIR, item)
-                try:
-                    if os.path.isfile(item_path):
-                        os.unlink(item_path)
-                    elif os.path.isdir(item_path):
-                        import shutil
-                        shutil.rmtree(item_path)
-                except Exception as e:
-                    st.warning(f"Error while cleaning up {item_path}: {e}")
-            
+        embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+        temp_db = Chroma(persist_directory=LOCAL_VECTOR_STORE_DIR.as_posix(), embedding_function=embeddings)
+        temp_db.delete_collection()
+        del temp_db  # Release instance
+
+        # Wait for OS to release file locks
+        import time
+        time.sleep(1)
+
+        # Clean up directory contents silently
+        for item in os.listdir(LOCAL_VECTOR_STORE_DIR):
+            item_path = os.path.join(LOCAL_VECTOR_STORE_DIR, item)
+            try:
+                if os.path.isfile(item_path):
+                    os.unlink(item_path)
+                elif os.path.isdir(item_path):
+                    import shutil
+                    shutil.rmtree(item_path)
+            except Exception:
+                # Silently continue if file is locked
+                pass
+
     except Exception as e:
         st.error(f"Error clearing vector store: {str(e)}")
         raise
