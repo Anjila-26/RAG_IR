@@ -1,0 +1,23 @@
+.streamlit/
+
+.venv
+
+# IDE
+.vscode/
+
+rag.ipynb
+
+human-nutrition-text.pdf
+
+# Project specific
+.env
+data/tmp/*
+data/vector_store/*
+!data/tmp/.gitkeep
+!data/vector_store/.gitkeep
+
+# Misc
+.DS_Store
+
+# Python
+__pycache__
