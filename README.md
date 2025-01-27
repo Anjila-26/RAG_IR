@@ -86,3 +86,6 @@ RAG/
 - chromadb/pinecone-client
 - beautifulsoup4
 - PyPDF2
+
+## Demo Video
+https://github.com/Anjila-26/RAG/raw/main/RAG.mp4
