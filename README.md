@@ -88,4 +88,4 @@ RAG/
 - PyPDF2
 
 ## Demo Video
-https://github.com/Anjila-26/RAG_IR/blob/master/RAG.mp4
+[![Watch the video](https://github.com/Anjila-26/RAG_IR/blob/master/rag.png)](https://github.com/Anjila-26/RAG_IR/blob/master/RAG.mp4)
