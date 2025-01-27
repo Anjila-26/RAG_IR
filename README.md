@@ -1,85 +1,88 @@
-# RAG (Retrieval Augmented Generation) Engine
+# Retrieval Augmented Generation (RAG) Chat Interface
 
-A Streamlit-based application that implements Retrieval Augmented Generation using LangChain, allowing users to query their documents using Google's Gemini model with optional Pinecone vector database integration.
+An intelligent chat interface that combines document processing with automated web scraping for enhanced context and responses using LangChain and Google's Gemini model.
 
 ## Features
 
-- PDF document processing and text extraction
-- Vector embedding generation using SentenceTransformers
-- Choice between local Chroma DB or Pinecone for vector storage
-- Integration with Google's Gemini 1.5 Flash model
-- Interactive chat interface with document-based responses
-- Conversation history tracking
+- **Document Processing**: 
+  - PDF document upload and processing
+  - Automated text chunking and embedding
+  - Intelligent context retrieval
 
-## Prerequisites
+- **Web Enhancement**:
+  - Automatic keyword extraction from documents
+  - Relevant web content integration
+  - Source tracking and citation
 
-- Python 3.8+
-- Google API key (Gemini)
-- Pinecone API key (optional)
-- Pinecone index must be created with:
-  - Dimension: 384 (for SentenceTransformer all-MiniLM-L6-v2)
-  - Metric: cosine
-  - Pod type: p1.x1 (or your preferred pod type)
+- **Vector Storage Options**:
+  - Local: ChromaDB for quick setup
+  - Cloud: Pinecone for scalable deployments
 
-## Installation
+- **Chat Interface**:
+  - Clean, intuitive Streamlit interface
+  - Context-aware responses
+  - Source attribution with web links
+  - Conversation history tracking
 
+## Setup
+
+1. Install required packages:
 ```bash
 pip install -r requirements.txt
 ```
 
-## Configuration
+2. Configure API keys:
+   - Set up Google API key for Gemini access
+   - (Optional) Configure Pinecone credentials for cloud vector storage
 
-### API Keys
-You can configure the application using either:
-1. Streamlit secrets.toml:
-```toml
-gemini_api_key = "your-gemini-api-key"
-pinecone_api_key = "your-pinecone-api-key"
-pinecone_env = "your-pinecone-environment"
-pinecone_index = "your-pinecone-index-name"
-```
-
-2. Or through the Streamlit UI sidebar
-
-## Usage
-
-1. Start the application:
+3. Launch the application:
 ```bash
 streamlit run app.py
 ```
 
-2. Configure:
-   - Enter API keys in sidebar if not using secrets.toml
-   - Toggle 'Use Pinecone Vector DB' if you want to use Pinecone
-   - Upload PDF documents
+## Usage
 
-3. Process Documents:
-   - Click "Submit Documents"
-   - Wait for processing completion
-   - Status messages will show progress
+1. **Configuration**:
+   - Input API keys in the sidebar
+   - Choose vector storage type (Local/Pinecone)
+   - Enable/disable web scraping feature
 
-4. Query Documents:
-   - Use the chat interface at the bottom
-   - Type your questions about the documents
-   - View conversation history above
+2. **Document Upload**:
+   - Upload PDF documents through the interface
+   - Click "Submit Documents" to process
+
+3. **Chat Interaction**:
+   - Ask questions about your documents
+   - View AI responses with context
+   - Explore related web sources in expandable sections
 
 ## Project Structure
 
 ```
 RAG/
-├── app.py          # Main application file
-├── data/           # Data directory
-│   ├── tmp/        # Temporary storage for uploaded files
-│   └── vector_store/ # Local vector store directory
-└── README.md
+├── app.py              # Main application and UI
+├── rag_backend.py      # Core RAG functionality
+├── scraping_agents.py  # Web scraping and processing
+├── data/
+    ├── tmp/           # Temporary storage
+    └── vector_store/  # Local vector database
 ```
 
-## Technologies Used
+## Technical Details
 
-- LangChain: Framework for LLM applications
-- Google Gemini 1.5 Flash: Large Language Model
-- Streamlit: Web interface
-- SentenceTransformers: Document embeddings
-- Chroma DB: Local vector storage
-- Pinecone: Cloud vector database (optional)
-- PyPDF2: PDF processing
+- **LLM**: Google Gemini 1.5 Flash
+- **Embeddings**: Sentence Transformers (all-MiniLM-L6-v2)
+- **Vector Stores**: ChromaDB (local) or Pinecone (cloud)
+- **Web Scraping**: Custom implementation with error handling and rate limiting
+- **UI Framework**: Streamlit
+
+## Requirements
+
+- Python 3.8+
+- langchain
+- streamlit
+- google-generative-ai
+- sentence-transformers
+- chromadb/pinecone-client
+- beautifulsoup4
+- PyPDF2
